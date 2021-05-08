@@ -1,5 +1,3 @@
-import { DeleteResult } from "typeorm";
-
 import Category from "../infra/typeorm/entities/Category";
 import ICreateCategoryDTO from "../dtos/ICreateCategoryDTO";
 
@@ -9,5 +7,5 @@ export default interface ICategoriesRepository {
   findAllCategories(): Promise<Category[] | undefined>;
   findById(id: string): Promise<Category | undefined>;
   findByName(name: string): Promise<Category | undefined>;
-  delete(id: string): Promise<DeleteResult>;
+  delete(id: string): Promise<any>;
 }

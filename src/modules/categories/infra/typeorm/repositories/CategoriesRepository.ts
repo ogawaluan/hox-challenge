@@ -1,4 +1,4 @@
-import { DeleteResult, getRepository, Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 
 import Category from "../entities/Category";
 import ICategoriesRepository from "@modules/categories/repositories/ICategoriesRepository";
@@ -45,7 +45,7 @@ class CategoriesRepository implements ICategoriesRepository {
     return category;
   }
 
-  public async delete(id: string): Promise<DeleteResult> {
+  public async delete(id: string): Promise<any> {
     return this.ormRepository.delete({ id });
   }
 }
