@@ -1,8 +1,8 @@
-import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 import Category from "../infra/typeorm/entities/Category";
 import ICategoriesRepository from "../repositories/ICategoriesRepository";
+import AppError from "@shared/errors/AppError";
 
 interface IRequest {
   category_id: string;
@@ -19,7 +19,7 @@ class DeleteCategoryService {
     const category = await this.categoriesRepository.findById(category_id);
 
     if (!category) {
-      throw new AppError('Category not found');
+      throw new AppError('Category not found', 404);
     }
 
     await this.categoriesRepository.delete(category.id);

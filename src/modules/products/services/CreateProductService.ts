@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-import { format } from 'date-fns';
 
 import Product from "../infra/typeorm/entities/Product";
 import IProductsRepository from "../repositories/IProductsRepository";
@@ -36,22 +35,22 @@ class CreateProductService {
     const checkCategoryExist = await this.categoriesRepository.findById(category_id);
 
     if (!checkCategoryExist) {
-      throw new AppError('Category not found');
+      throw new AppError('Category not found', 404);
     }
+
+    const manufacturing = new Date(manufacturingDate).toISOString();
+    const expiration = new Date(expirationDate).toISOString();
     
-    const manufacturingDateFormatted = format(new Date(manufacturingDate), "dd/MM/yyyy");
-    const expirationDateFormatted = format(new Date(expirationDate), "dd/MM/yyyy");
-    
-    if (manufacturingDateFormatted >= expirationDateFormatted) {
-      throw new AppError('manufacturingDate is higher than expirationDate');
+    if (manufacturing >= expiration) {
+      throw new AppError('manufacturingDate is higher than expirationDate', 400);
     }
 
     const product = await this.productsRepository.create({
       category_id,
       name,
-      manufacturingDate: manufacturingDateFormatted,
+      manufacturingDate: manufacturing,
       perishableProduct,
-      expirationDate: expirationDateFormatted,
+      expirationDate: expiration,
       price,
     });
 

@@ -58,11 +58,17 @@ class CategoriesController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
+    const { sortField, sortOrder, page } = request.query;
+
     const listAllCategories = container.resolve(ListAllCategoriesService);
 
-    const categories = await listAllCategories.execute();
+    const categories = await listAllCategories.execute({
+      page: Number(page),
+      sortField,
+      sortOrder,
+    });
 
-    return response.json(categories);
+    return response.json({page, categories});
   }
 }
 

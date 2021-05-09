@@ -25,10 +25,25 @@ class CategoriesRepository implements ICategoriesRepository {
     return this.ormRepository.save(category);
   }
 
-  public async findAllCategories(): Promise<Category[] | undefined> {
-    const categories = await this.ormRepository.find();
-
-    return categories;
+  public async findAllCategories(sortField: string, sortOrder: string, limit: number, offset: number): Promise<Category[] | undefined> {
+    if (sortField) {
+      const products = await this.ormRepository.find({
+        order: {
+          [sortField]: sortOrder = 'desc' ? 'DESC' : 'ASC',
+        },
+        skip: offset,
+        take: limit,
+      });
+  
+      return products;
+    } else {
+      const products = await this.ormRepository.find({
+        skip: offset,
+        take: limit,
+      });
+  
+      return products;
+    }
   }
 
   public async findById(id: string): Promise<Category | undefined> {

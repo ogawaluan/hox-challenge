@@ -14,6 +14,11 @@ describe('ListAllProductsService', () => {
   });
 
   it('should be able to list the products', async () => {
+    let page = 1;
+    let category_id
+    let sortField
+    let sortOrder
+
     await fakeProductsRepository.create({
       category_id: 'Foo1',
       name: 'Foo1',
@@ -32,12 +37,27 @@ describe('ListAllProductsService', () => {
       price: 145.45,
     });
 
-    const products = await listAllProductsService.execute();
+    const products = await listAllProductsService.execute({
+      page,
+      category_id,
+      sortField,
+      sortOrder,
+    });
 
     expect(products.length >= 2).toBeTruthy();
   });
 
   it('should not be able to list the products if products.length have 0', async () => {
-    await expect(listAllProductsService.execute()).rejects.toBeInstanceOf(AppError);
+    let page = 1;
+    let category_id
+    let sortField
+    let sortOrder
+
+    await expect(listAllProductsService.execute({
+      page,
+      category_id,
+      sortField,
+      sortOrder,
+    })).rejects.toBeInstanceOf(AppError);
   });
 });

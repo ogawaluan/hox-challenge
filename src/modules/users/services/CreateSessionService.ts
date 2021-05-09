@@ -31,13 +31,13 @@ class CreateSessionService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError('Incorrect email/password combination');
+      throw new AppError('Incorrect email/password combination', 400);
     }
 
     const passwordMatched = await this.hashProvider.compareHash(password, user.password);
 
     if (!passwordMatched) {
-      throw new AppError('Incorrect email/password combination');
+      throw new AppError('Incorrect email/password combination', 400);
     }
 
     const { expiresIn, secret } = authConfig.jwt;

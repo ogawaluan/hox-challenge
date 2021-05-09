@@ -19,7 +19,7 @@ class CreateCategoryService {
     const checkCategoryExist = await this.categoriesRepository.findByName(name);
 
     if (checkCategoryExist) {
-      throw new AppError('Category name already exist');
+      throw new AppError('Category name already exist', 400);
     }
 
     const category = await this.categoriesRepository.create({

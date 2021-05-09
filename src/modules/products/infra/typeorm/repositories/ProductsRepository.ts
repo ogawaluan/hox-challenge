@@ -37,10 +37,56 @@ class ProductsRepository implements IProductsRepository {
     return this.ormRepository.save(product);
   }
 
-  public async findAllProducts(): Promise<Product[] | undefined> {
-    const products = await this.ormRepository.find();
+  public async findAllProducts(
+    sortField: string,
+    sortOrder: string,
+    limit: number,
+    offset: number,
+    category_id: string | undefined,
+  ): Promise<Product[] | undefined> {
+    if (category_id && sortField) {
+      const products = await this.ormRepository.find({
+        where: { category_id },
+        order: {
+          [sortField]: sortOrder == 'desc' ? 'DESC' : 'ASC',
+        },
+        skip: offset,
+        take: limit,
+      });
+  
+      return products;
+    } 
+    
+    if (category_id) {
+      const products = await this.ormRepository.find({
+        where: { category_id },
+        skip: offset,
+        take: limit,
+      });
+  
+      return products;
+    }
 
-    return products;
+    if (sortField) {
+      const products = await this.ormRepository.find({
+        order: {
+          [sortField]: sortOrder = 'desc' ? 'DESC' : 'ASC',
+        },
+        skip: offset,
+        take: limit,
+      });
+  
+      return products;
+    }
+
+    if (!category_id || !sortField) {
+      const products = await this.ormRepository.find({
+        skip: offset,
+        take: limit,
+      });
+  
+      return products;
+    }
   }
 
   public async findById(id: string): Promise<Product | undefined> {

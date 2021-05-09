@@ -1,6 +1,7 @@
 {
   "type": "sqlite",
   "database": "./src/shared/infra/typeorm/database.sqlite",
+  "logging": false,
   "entities": [
     "./src/modules/**/infra/typeorm/entities/*.ts"
   ],

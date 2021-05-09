@@ -31,6 +31,11 @@ describe('DeleteProductService', () => {
   });
 
   it('should be able to delete a product', async () => {
+    let page = 1;
+    let category_id
+    let sortField
+    let sortOrder
+
     const category = await fakeCategoriesRepository.create({
       name: 'Foo'
     });
@@ -57,7 +62,12 @@ describe('DeleteProductService', () => {
       product_id: product.id,
     });
 
-    const products = await listAllProducts.execute();
+    const products = await listAllProducts.execute({
+      page,
+      category_id,
+      sortField,
+      sortOrder,
+    });
 
     expect(products.find(findProduct => findProduct.id === product.id)).toBeUndefined();
   });

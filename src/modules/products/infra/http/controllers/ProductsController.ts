@@ -81,11 +81,18 @@ class ProductsController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
+    const { sortField, sortOrder, page, category_id } = request.query;
+
     const listAllProducts = container.resolve(ListAllProductsService);
 
-    const products = await listAllProducts.execute();
+    const products = await listAllProducts.execute({
+      page: Number(page),
+      category_id: category_id ? String(category_id) : undefined,
+      sortField,
+      sortOrder,
+    });
 
-    return response.json(products);
+    return response.json({page, products});
   }
 }
 

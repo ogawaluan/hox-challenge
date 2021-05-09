@@ -1,8 +1,8 @@
-import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 import Product from "../infra/typeorm/entities/Product";
 import IProductsRepository from "../repositories/IProductsRepository";
+import AppError from "@shared/errors/AppError";
 
 interface IRequest {
   product_id: string;
@@ -19,7 +19,7 @@ class DeleteProductService {
     const product = await this.productsRepository.findById(product_id);
 
     if (!product) {
-      throw new AppError('Product not found');
+      throw new AppError('Product not found', 404);
     }
 
     await this.productsRepository.delete(product_id);

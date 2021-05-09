@@ -27,6 +27,10 @@ describe('DeleteCategoryService', () => {
   });
 
   it('should be able to delete a category', async () => {
+    let page = 1;
+    let sortField;
+    let sortOrder;
+
     const category = await createCategoryService.execute({
       name: 'Foo',
     });
@@ -39,7 +43,11 @@ describe('DeleteCategoryService', () => {
       category_id: category.id,
     });
 
-    const categories = await listAllCategories.execute();
+    const categories = await listAllCategories.execute({
+      page,
+      sortField,
+      sortOrder,
+    });
 
     expect(categories.find(findCategory => findCategory.id === category.id)).toBeUndefined();
   });

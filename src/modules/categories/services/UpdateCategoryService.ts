@@ -20,13 +20,13 @@ class UpdateCategoryService {
     const category = await this.categoriesRepository.findById(category_id);
 
     if (!category) {
-      throw new AppError('Category not found');
+      throw new AppError('Category not found', 404);
     }
 
     const categoryWithSameName = await this.categoriesRepository.findByName(name);
 
     if (categoryWithSameName) {
-      throw new AppError('Category name already exist');
+      throw new AppError('Category name already exist', 400);
     }
 
     category.name = name;
