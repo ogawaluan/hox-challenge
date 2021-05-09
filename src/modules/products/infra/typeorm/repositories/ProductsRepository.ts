@@ -48,7 +48,7 @@ class ProductsRepository implements IProductsRepository {
       const products = await this.ormRepository.find({
         where: { category_id },
         order: {
-          [sortField]: sortOrder == 'desc' ? 'DESC' : 'ASC',
+          [sortField]: sortOrder === 'desc' || sortOrder === 'DESC' ? 'DESC' : 'ASC',
         },
         skip: offset,
         take: limit,
@@ -70,7 +70,7 @@ class ProductsRepository implements IProductsRepository {
     if (sortField) {
       const products = await this.ormRepository.find({
         order: {
-          [sortField]: sortOrder = 'desc' ? 'DESC' : 'ASC',
+          [sortField]: sortOrder === 'desc' || sortOrder === 'DESC' ? 'DESC' : 'ASC',
         },
         skip: offset,
         take: limit,

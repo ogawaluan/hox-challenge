@@ -29,7 +29,7 @@ class CategoriesRepository implements ICategoriesRepository {
     if (sortField) {
       const products = await this.ormRepository.find({
         order: {
-          [sortField]: sortOrder = 'desc' ? 'DESC' : 'ASC',
+          [sortField]: sortOrder === 'desc' || sortOrder === 'DESC' ? 'DESC' : 'ASC',
         },
         skip: offset,
         take: limit,
